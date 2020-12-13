@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}Последние обновления {{ user_profile.get_username }}{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+
+    <main role="main" class="container">
+        <div class="row">
+            {% include "author.html" with post=True %}
+    
+            <div class="col-md-9">
+    
+                <div class="card mb-3 mt-1 shadow-sm">
+                    {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+                        <img class="card-img" src="{{ im.url }}">
+                    {% endthumbnail %}
+                        <div class="card-body">
+                                <p class="card-text">
+                                        <a href="{% url 'profile' username=post.author.get_username %}"><strong class="d-block text-gray-dark">@{{ post.author.get_username }}</strong></a>
+                                        {{ post.text | safe | linebreaksbr }}
+                                    </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group ">
+                                                
+                                                {% ifequal post.author.pk user.pk %}<a class="btn btn-sm text-muted" href="{% url 'post_edit' username=post.author.get_username post_id=post.pk %}" role="button">Редактировать</a>{% endifequal %}
+                                        </div>
+                                        <small class="text-muted">{{ post.pub_date|date:"d M Y H:i" }}</small>
+                                </div>
+                        </div>
+                </div>
+                {% include "comments.html" %}
+         </div>
+        </div>
+    </main> 
+    
+{% endblock %} 
