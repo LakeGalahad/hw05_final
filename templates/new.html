@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Создать новый пост{% endblock %}
+{% block title %}{% if post %}Редактировать запись{% else %}Создать новый пост{% endif %}{% endblock %}
 {% block header %}{% endblock %}
 {% block content %}
 {% load user_filters %}

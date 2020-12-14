@@ -16,7 +16,12 @@ class Post(models.Model):
                               related_name="posts", blank=True,
                               null=True, verbose_name="Название группы",
                               help_text="Выберите группу интересов")
-    image = models.ImageField(upload_to='posts/', blank=True, null=True)
+    image = models.ImageField(
+        upload_to='posts/',
+        blank=True,
+        null=True,
+        verbose_name="Изображение",
+    )
 
     class Meta:
         ordering = ['-pub_date']
@@ -57,3 +62,11 @@ class Follow(models.Model):
                              related_name="follower")
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name="following")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='unique_following'
+            )
+        ]

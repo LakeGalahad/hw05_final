@@ -283,7 +283,7 @@ class ViewsTest(TestCase):
         response2 = self.authorized_client.get(reverse("follow_index"))
         self.assertNotEqual(response1.content, response2.content)
 
-    def test_authorized_comments_only(self):
+    def test_authorized_comments(self):
         comments = Comment.objects.filter(post=Post.objects.first()).count()
         comment = {
             "text": "test"
@@ -299,6 +299,12 @@ class ViewsTest(TestCase):
             post=Post.objects.first()
         ).count()
         self.assertEqual(comments_new_authorized, comments + 1)
+
+    def test_guest_comments(self):
+        comments = Comment.objects.filter(post=Post.objects.first()).count()
+        comment = {
+            "text": "test"
+        }
         self.guest_client.post(
             reverse("add_comment", kwargs={
                 "username": "test",
@@ -309,4 +315,4 @@ class ViewsTest(TestCase):
         comments_new_guest = Comment.objects.filter(
             post=Post.objects.first()
         ).count()
-        self.assertEqual(comments_new_guest, comments_new_authorized)
+        self.assertEqual(comments_new_guest, comments)

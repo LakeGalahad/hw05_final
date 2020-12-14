@@ -28,7 +28,8 @@ class PostsModelTest(TestCase):
         post = PostsModelTest.post
         field_verbose = {
             "text": "Текст поста",
-            "group": "Название группы"
+            "group": "Название группы",
+            "image": "Изображение"
         }
         for value, expected in field_verbose.items():
             with self.subTest():

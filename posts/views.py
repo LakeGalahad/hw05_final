@@ -36,7 +36,7 @@ def group_posts(request, slug):
 
 @login_required
 def new_post(request):
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None, files=request.FILES or None,)
     if form.is_valid():
         new_form = form.save(commit=False)
         new_form.author = request.user
@@ -159,9 +159,9 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    follow = Follow.objects.filter(user=request.user, author=author).exists()
+    follow = Follow.objects.filter(user=request.user, author=author)
     if follow:
-        Follow.objects.filter(user=request.user, author=author).delete()
+        follow.delete()
     return redirect("profile", username=username)
 
 
